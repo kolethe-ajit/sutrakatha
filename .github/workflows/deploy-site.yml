@@ -1,0 +1,79 @@
+name: Deploy site to GoDaddy
+
+# Publishes the full site (everything except .github) to the GoDaddy cPanel
+# hosting web root over encrypted FTPS. Runs when site files change on main,
+# or manually from the Actions tab.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/test-connection.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: godaddy-site-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Upload site to GoDaddy via FTPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Upload site via encrypted FTPS
+        env:
+          FTP_HOST: ${{ secrets.GODADDY_FTP_SERVER }}
+          FTP_USER: ${{ secrets.GODADDY_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.GODADDY_FTP_PASSWORD }}
+          FTP_DIR: ${{ secrets.GODADDY_FTP_DIR }}
+        run: |
+          python3 - <<'PY'
+          import os, ssl, posixpath
+          from ftplib import FTP_TLS, error_perm
+
+          web_root = os.environ["FTP_DIR"].rstrip("/") or "/"
+          EXCLUDE_DIRS = {".git", ".github"}
+
+          ctx = ssl.create_default_context()
+          with FTP_TLS(context=ctx, timeout=60) as ftp:
+              ftp.connect(os.environ["FTP_HOST"], 21)
+              ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
+              ftp.prot_p()
+              ftp.set_pasv(True)
+
+              def ensure_dir(path):
+                  try:
+                      ftp.mkd(path)
+                      print("created", path)
+                  except error_perm:
+                      pass  # already exists
+
+              uploaded = 0
+              for dirpath, dirnames, filenames in os.walk("."):
+                  dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS]
+                  rel = os.path.relpath(dirpath, ".")
+                  remote_dir = web_root if rel == "." else posixpath.join(web_root, rel.replace(os.sep, "/"))
+                  if rel != ".":
+                      ensure_dir(remote_dir)
+                  for name in sorted(filenames):
+                      with open(os.path.join(dirpath, name), "rb") as fh:
+                          ftp.storbinary("STOR " + posixpath.join(remote_dir, name), fh)
+                      uploaded += 1
+                      print("uploaded", posixpath.join(remote_dir, name))
+              print(f"Done. {uploaded} files uploaded to {web_root}")
+          PY
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### SutraKatha site deploy" >> $GITHUB_STEP_SUMMARY
+          echo "Commit: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "Live site: https://www.sutrakatha.ca/" >> $GITHUB_STEP_SUMMARY

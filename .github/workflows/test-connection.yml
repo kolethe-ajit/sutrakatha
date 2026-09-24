@@ -1,0 +1,42 @@
+name: Test GoDaddy connection
+
+# Read-only check: connects to the GoDaddy cPanel hosting over FTPS and lists
+# the target directory. Uploads nothing. Run manually from the Actions tab
+# before the first real deploy.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Validate FTPS credentials (read-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Connect and list web root
+        env:
+          FTP_HOST: ${{ secrets.GODADDY_FTP_SERVER }}
+          FTP_USER: ${{ secrets.GODADDY_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.GODADDY_FTP_PASSWORD }}
+          FTP_DIR: ${{ secrets.GODADDY_FTP_DIR }}
+        run: |
+          python3 - <<'PY'
+          import os, ssl
+          from ftplib import FTP_TLS
+
+          web_root = os.environ["FTP_DIR"].rstrip("/") or "/"
+          ctx = ssl.create_default_context()
+          with FTP_TLS(context=ctx, timeout=60) as ftp:
+              ftp.connect(os.environ["FTP_HOST"], 21)
+              ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
+              ftp.prot_p()
+              ftp.set_pasv(True)
+              ftp.cwd(web_root)
+              print(f"Connected OK. Current directory: {ftp.pwd()}")
+              print("Listing (read-only, nothing uploaded):")
+              ftp.retrlines("LIST")
+          print("Connection test PASSED.")
+          PY
