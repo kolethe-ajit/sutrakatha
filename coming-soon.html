@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SutraKatha — Every saree holds a story | Coming Soon</title>
+<meta name="description" content="SutraKatha transforms donated Indian sarees into one-of-a-kind garments and home pieces, handmade with artisan partners in India. Launching soon in Canada." />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<style>
+  :root{
+    --bg:#160c08;
+    --bg2:#2d1710;
+    --gold:#dec06b;
+    --gold2:#c9a84c;
+    --terracotta:#c4703f;
+    --ivory:#f6efe5;
+    --muted:#d8c6ae;
+    --line:rgba(222,192,107,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    background:
+      radial-gradient(circle at 82% 8%, rgba(201,168,76,.16), transparent 30%),
+      radial-gradient(circle at 12% 92%, rgba(196,112,63,.18), transparent 32%),
+      linear-gradient(135deg, var(--bg), var(--bg2));
+    color:var(--ivory);
+    font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;
+    display:flex; flex-direction:column; min-height:100vh;
+  }
+  body:before{
+    content:""; position:fixed; inset:0; pointer-events:none;
+    background:repeating-linear-gradient(90deg, transparent 0 11.8%, rgba(222,192,107,.045) 12% 12.2%, transparent 12.4% 24%);
+  }
+  main{flex:1; display:flex; align-items:center; justify-content:center; padding:8vh 6vw; position:relative; z-index:1}
+  .wrap{width:min(760px,100%); text-align:center}
+  .flourish{color:var(--gold2); letter-spacing:.6em; font-size:.8rem; margin-bottom:1.6rem}
+  .wordmark{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(2.6rem, 8vw, 4.6rem);
+    letter-spacing:.16em; color:var(--gold); margin:0;
+    text-shadow:0 0 36px rgba(222,192,107,.20);
+  }
+  .tagline{
+    font-family:Georgia,serif; font-style:italic;
+    color:var(--muted); font-size:clamp(1.1rem, 2.6vw, 1.5rem);
+    margin:.9rem 0 0;
+  }
+  .story{
+    color:var(--muted); line-height:1.75; font-size:1.02rem;
+    max-width:560px; margin:2.2rem auto 0;
+  }
+  .story strong{color:var(--ivory); font-weight:600}
+  form{
+    margin:2.6rem auto 0; max-width:460px;
+    display:flex; gap:0; border:1px solid var(--line); border-radius:999px;
+    overflow:hidden; background:rgba(41,22,14,.64);
+  }
+  input[type=email]{
+    flex:1; min-width:0; border:0; background:transparent; color:var(--ivory);
+    padding:1rem 1.35rem; font-size:.98rem; outline:none;
+  }
+  input[type=email]::placeholder{color:rgba(216,198,174,.55)}
+  button{
+    border:0; cursor:pointer; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase;
+    padding:1rem 1.5rem; color:var(--bg);
+    background:linear-gradient(135deg, var(--gold), var(--gold2));
+    font-weight:700;
+  }
+  button:hover{filter:brightness(1.07)}
+  .thanks{
+    display:none; margin:2.6rem auto 0; max-width:460px;
+    border:1px solid var(--line); border-radius:16px; padding:1.4rem 1.6rem;
+    background:rgba(41,22,14,.64); color:var(--ivory); line-height:1.6;
+  }
+  .thanks em{color:var(--gold); font-family:Georgia,serif}
+  footer{
+    position:relative; z-index:1; text-align:center; padding:1.6rem 6vw 2.2rem;
+    color:rgba(216,198,174,.6); font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+  }
+  footer a{color:var(--gold2); text-decoration:none}
+  footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<main>
+  <div class="wrap">
+    <div class="flourish">✦ ✦ ✦</div>
+    <h1 class="wordmark">SUTRAKATHA</h1>
+    <p class="tagline">Every saree holds a story. We&rsquo;re giving it a new one.</p>
+    <p class="story">
+      We collect cherished, donated Indian sarees from across Canada and transform them with
+      artisan partners in India into <strong>one-of-a-kind garments and home pieces</strong> —
+      zero waste, fair wages, and a story that continues.
+    </p>
+    <form id="notify" action="https://formsubmit.co/reach@sutrakatha.ca" method="POST">
+      <input type="hidden" name="_subject" value="SutraKatha — new launch notification signup" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="true" />
+      <input type="email" name="email" placeholder="Your email address" required aria-label="Email address" />
+      <button type="submit">Notify me</button>
+    </form>
+    <div class="thanks" id="thanks">
+      Thank you — <em>you&rsquo;re part of the story now.</em><br />
+      We&rsquo;ll write as soon as we launch.
+    </div>
+  </div>
+</main>
+<footer>
+  Coming soon &middot; Oakville, Ontario, Canada &middot; <a href="mailto:reach@sutrakatha.ca">reach@sutrakatha.ca</a>
+</footer>
+<script>
+  // After FormSubmit redirects back with ?submitted=1, show the thank-you card.
+  var form = document.getElementById('notify');
+  form.action = 'https://formsubmit.co/reach@sutrakatha.ca';
+  var next = document.createElement('input');
+  next.type = 'hidden'; next.name = '_next';
+  next.value = location.origin + location.pathname + '?submitted=1';
+  form.appendChild(next);
+  if (new URLSearchParams(location.search).get('submitted')) {
+    form.style.display = 'none';
+    document.getElementById('thanks').style.display = 'block';
+  }
+</script>
+</body>
+</html>

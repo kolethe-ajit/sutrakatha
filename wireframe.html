@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SutraKatha — Website Wireframe (Draft)</title>
+<meta name="description" content="Draft wireframe of the full SutraKatha website structure. Internal review only." />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --plum:#421742;
+    --gold:#cba370;
+    --offwhite:#f5efe6;
+    --sage:#7c8b6f;
+    --ink:#2a1a28;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--offwhite); color:var(--ink);
+    font-family:"Montserrat","Helvetica Neue",Arial,sans-serif;
+    font-weight:400; font-size:16.5px; line-height:1.6;
+  }
+  .page{max-width:960px; margin:0 auto; padding:3.5rem 6vw 5rem}
+  .banner{
+    background:var(--plum); color:var(--offwhite); text-align:center;
+    font-weight:600; font-size:14px; letter-spacing:.14em; text-transform:uppercase;
+    padding:.7rem 1rem;
+  }
+  h1{
+    font-weight:300; font-size:clamp(1.8rem,5vw,2.6rem);
+    letter-spacing:.18em; color:var(--plum); margin:0 0 .4rem;
+  }
+  .kicker{
+    color:var(--gold); font-weight:500; font-size:.75rem;
+    letter-spacing:.4em; text-transform:uppercase; margin:0 0 .8rem;
+  }
+  .lede{color:rgba(42,26,40,.75); font-weight:300; max-width:640px; margin:.4rem 0 3rem}
+  a{color:var(--plum)}
+  .back{font-weight:600; font-size:14px; letter-spacing:.14em; text-transform:uppercase; text-decoration:none; color:var(--plum)}
+  .back:hover{color:var(--gold)}
+
+  .section{margin:0 0 1.6rem}
+  .section-label{
+    display:flex; align-items:baseline; gap:.8rem; margin:0 0 .6rem;
+    color:var(--plum); font-weight:600; font-size:.8rem;
+    letter-spacing:.25em; text-transform:uppercase;
+  }
+  .section-label span.tag{
+    font-weight:400; font-size:.68rem; letter-spacing:.1em; color:rgba(42,26,40,.55);
+    text-transform:none;
+  }
+  .frame{
+    border:1.5px dashed rgba(66,23,66,.45); border-radius:10px;
+    padding:1.1rem 1.2rem; background:rgba(255,255,255,.5);
+    color:rgba(42,26,40,.7); font-weight:300; font-size:.92rem;
+  }
+  .frame.sage{border-color:rgba(124,139,111,.7); background:rgba(124,139,111,.08)}
+  .frame .blocks{display:grid; gap:.7rem; margin-top:.7rem}
+  .frame .blocks.cols-2{grid-template-columns:1fr 1fr}
+  .frame .blocks.cols-3{grid-template-columns:repeat(3,1fr)}
+  .frame .blocks.cols-4{grid-template-columns:repeat(4,1fr)}
+  .block{
+    border:1px solid rgba(66,23,66,.35); border-radius:8px;
+    padding:.8rem .9rem; background:#fff;
+    font-size:.8rem; color:rgba(42,26,40,.65);
+  }
+  .block b{display:block; font-weight:500; color:var(--plum); letter-spacing:.06em; margin-bottom:.15rem}
+  @media (max-width:640px){
+    .frame .blocks.cols-3,.frame .blocks.cols-4{grid-template-columns:1fr 1fr}
+  }
+  footer{
+    margin-top:3rem; padding-top:1.4rem; border-top:1px solid rgba(66,23,66,.2);
+    color:rgba(42,26,40,.5); font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="banner">Draft &mdash; internal review only</div>
+<div class="page">
+  <p class="kicker">SutraKatha &middot; sutrakatha.ca</p>
+  <h1>WEBSITE WIREFRAME</h1>
+  <p class="lede">Proposed structure for the full SutraKatha storefront and story site, on the v3 brand theme (plum ground, gold accents, sage reserved for sustainability and provenance). Commerce runs on Shopify; this page is the agreed page map and content plan.</p>
+
+  <div class="section">
+    <h2 class="section-label">Global header <span class="tag">all pages</span></h2>
+    <div class="frame">
+      Navigation: wordmark &middot; Shop &middot; Our Story &middot; Provenance &middot; Donate a Saree &middot; Journal &middot; Contact
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-label">01 &middot; Home <span class="tag">sutrakatha.ca</span></h2>
+    <div class="frame">
+      <div class="blocks">
+        <div class="block"><b>Hero</b>Plum ground, gold headline &ldquo;Threads that tell stories&rdquo;, one textile close-up image, CTA: Shop the collection</div>
+        <div class="block"><b>Featured editions</b>3&ndash;4 one-of-a-kind pieces, each marked &ldquo;edition of one&rdquo;</div>
+        <div class="block"><b>Brand promise strip</b>Zero waste &middot; fair artisan wages &middot; every piece carries its saree&rsquo;s story</div>
+        <div class="block"><b>Email capture</b>And launch/drop announcements</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-label">02 &middot; Shop <span class="tag">Shopify</span></h2>
+    <div class="frame">
+      <div class="blocks cols-3">
+        <div class="block"><b>Collection grid</b>Nine silhouettes (garments + home), filter by type</div>
+        <div class="block"><b>Product page</b>Photos, fabric origin, saree story card, size/care, CAD price incl. HST note</div>
+        <div class="block"><b>Cart / checkout</b>Standard Shopify flow; story card ships with every order</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-label">03 &middot; Our Story <span class="tag">founders + artisans</span></h2>
+    <div class="frame">
+      <div class="blocks cols-2">
+        <div class="block"><b>Why SutraKatha</b>Donated sarees reborn in Canada, made with artisan partners in India</div>
+        <div class="block"><b>The makers</b>Artisan and manufacturing partners; fair-wage commitment</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-label">04 &middot; Provenance &amp; sustainability <span class="tag">sage accent section</span></h2>
+    <div class="frame sage">
+      <div class="blocks cols-2">
+        <div class="block"><b>Circular process</b>Collect &rarr; sort &rarr; craft &rarr; quality &rarr; story continues</div>
+        <div class="block"><b>Impact</b>Sarees diverted from waste, artisan hours supported</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-label">05 &middot; Donate a Saree <span class="tag">intake</span></h2>
+    <div class="frame">
+      How to donate, what we accept, and the donor acknowledgement each contributor receives.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-label">06 &middot; Journal <span class="tag">editorial</span></h2>
+    <div class="frame">
+      Stories behind individual sarees, editions, and the people who wore them.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-label">07 &middot; Contact &amp; footer <span class="tag">all pages</span></h2>
+    <div class="frame">
+      hello@sutrakatha.ca &middot; wholesale@sutrakatha.ca &middot; social links &middot; newsletter &middot; policies
+    </div>
+  </div>
+
+  <p style="margin-top:2.5rem"><a class="back" href="index.html">&larr; Back to hub</a></p>
+  <footer>SutraKatha &middot; wireframe draft &middot; September 2026</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+name: Test Turbify connection
+
+# Read-only check. Confirms the Turbify FTPS credentials work and that the
+# sutrakatha subdomain folder exists, without changing any files.
+# Run manually from the Actions tab before enabling deployment.
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  test-connection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - name: Check encrypted connection and subdomain folder
+        env:
+          FTP_HOST: ${{ secrets.YAHOO_FTP_SERVER }}
+          FTP_USER: ${{ secrets.YAHOO_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.YAHOO_FTP_PASSWORD }}
+          FTP_DIR: ${{ secrets.YAHOO_FTP_DIR }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import ssl
+          from ftplib import FTP_TLS
+
+          required = ["FTP_HOST", "FTP_USER", "FTP_PASSWORD", "FTP_DIR"]
+          missing = [name for name in required if not os.environ.get(name)]
+          if missing:
+              raise SystemExit("Missing settings: " + ", ".join(missing))
+
+          context = ssl.create_default_context()
+
+          with FTP_TLS(context=context, timeout=30) as ftp:
+              ftp.connect(os.environ["FTP_HOST"], 21)
+              ftp.login(os.environ["FTP_USER"], os.environ["FTP_PASSWORD"])
+              ftp.prot_p()
+              ftp.cwd(os.environ["FTP_DIR"])
+
+              print("Encrypted FTPS connection successful.")
+              names = {
+                  name.rstrip("/").rsplit("/", 1)[-1]
+                  for name in ftp.nlst()
+              }
+
+              expected = ["index.html", "coming-soon.html", "wireframe.html", "assets"]
+              for name in expected:
+                  status = "FOUND" if name in names else "NOT FOUND"
+                  print(f"{name}: {status}")
+
+              print("Folder check complete. No files were changed.")
+          PY
